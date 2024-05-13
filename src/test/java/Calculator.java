@@ -1,16 +1,16 @@
+import java.util.List;
+
 public class Calculator {
 
     public int sum(String str) {
-        if (str == null || str.isBlank()) {
-            return 0;
-        }
+        Delimiter delimiter = new Delimiter();
+        Operand operand = new Operand();
+        List<String> strList = delimiter.split(str);
 
-        int num = Integer.parseInt(str);
+        List<Integer> list = strList.stream()
+                                    .map(s -> operand.getValue(s))
+                                    .toList();
 
-        if (num < 0) {
-            throw new IllegalArgumentException();
-        }
-
-        return num;
+        return list.stream().mapToInt(Integer::intValue).sum();
     }
 }

@@ -6,40 +6,42 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class CalculatorTest {
 
     @Test
-    void zero_if_blank() {
+    void sum_single_num() {
         Calculator cal = new Calculator();
-        int result = cal.sum("   ");
+        int result = cal.sum("1");
 
-        assertEquals(0, result);
+        assertEquals(1, result);
     }
 
     @Test
-    void zero_if_null() {
+    void sum_multi_nums_with_default_delimiter() {
         Calculator cal = new Calculator();
-        int result = cal.sum(null);
+        int result = cal.sum("1:2,3:4,");
 
-        assertEquals(0, result);
+        assertEquals(10, result);
     }
 
     @Test
-    void return_single_number() {
+    void sum_multi_nums_with_custom_delimiter() {
         Calculator cal = new Calculator();
-        int result = cal.sum("11");
+        int result = cal.sum("//-\n1-3,5:7");
 
-        assertEquals(11, result);
+        assertEquals(16, result);
     }
 
     @Test
-    void throw_exception_if_negative() {
+    void sum_multi_nums_with_non_num() {
         Calculator cal = new Calculator();
 
-        assertThrows(IllegalArgumentException.class, () -> cal.sum("-1"));
+        assertThrows(IllegalArgumentException.class,
+                () -> cal.sum("//;\n1=3,5:7"));
     }
 
     @Test
-    void throw_exception_if_not_number() {
+    void sum_multi_nums_with_negative_num() {
         Calculator cal = new Calculator();
 
-        assertThrows(NumberFormatException.class, () -> cal.sum("ABC"));
+        assertThrows(IllegalArgumentException.class,
+                () -> cal.sum("//;\n1;3,5:-7"));
     }
 }
