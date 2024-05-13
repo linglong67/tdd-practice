@@ -1,3 +1,5 @@
+package calculator;
+
 public class Operand {
 
     public int getValue(String str) {
